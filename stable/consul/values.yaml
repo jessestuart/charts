@@ -20,9 +20,9 @@ Domain: consul
 ## Used as selector
 Component: "consul"
 Replicas: 3
-Image: "consul"
-ImageTag: "1.0.0"
-ImagePullPolicy: "Always"
+Image: consul
+ImageTag: 1.1.0
+ImagePullPolicy: Always
 Resources: {}
  # requests:
  #   cpu: "100m"
@@ -103,7 +103,7 @@ ui:
 ##
 uiService:
   enabled: true
-  type: "NodePort"
+  type: "LoadBalancer"
 
 ConsulConfig: []
 #  - type: secret

@@ -12,33 +12,33 @@ updateStrategy:
 podAnnotations: {}
 
 image:
-  repository: registry
-  tag: 2.6.2
+  repository: cblomart/rpi-registry
+  tag: latest
   pullPolicy: IfNotPresent
 # imagePullSecrets:
     # - name: docker
 service:
   name: registry
-  type: ClusterIP
+  type: LoadBalancer
   # clusterIP:
   port: 5000
   # nodePort:
   annotations: {}
   # foo.io/bar: "true"
 ingress:
-  enabled: false
+  enabled: true
   path: /
   # Used to create an Ingress record.
   hosts:
-    - chart-example.local
+    - registry.internal.jesses.io
   annotations:
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  tls:
+    kubernetes.io/ingress.class: traefik
+    kubernetes.io/tls-acme: "true"
+  # tls:
     # Secrets must be manually created in the namespace.
-    # - secretName: chart-example-tls
+    # - secretName: registry-tls
     #   hosts:
-    #     - chart-example.local
+    #     - registry.jesses.io
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
@@ -52,22 +52,22 @@ resources: {}
   #  memory: 128Mi
 persistence:
   accessMode: 'ReadWriteOnce'
-  enabled: false
+  enabled: true
   size: 10Gi
-  # storageClass: '-'
+  storageClass: 'nfs-kr2'
 
 # set the type of filesystem to use: filesystem, s3
 storage: filesystem
 
 # Set this to name of secret for tls certs
-# tlsSecretName: registry.docker.example.com
+# tlsSecretName: registry.docker.jesses.io
 secrets:
   haSharedSecret: ""
   htpasswd: ""
 # Secrets for S3 access and secret keys
-#   s3:
-#     accessKey: ""
-#     secretKey: ""
+  # s3:
+  #   accessKey: "AKIAIOSFODNN7EXAMPLE"
+  #   secretKey: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
 # Secrets for Swift username and password
 #   swift:
 #     username: ""

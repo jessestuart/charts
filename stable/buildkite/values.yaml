@@ -5,14 +5,14 @@
 replicaCount: 1
 
 image:
-  repository: buildkite/agent
-  tag: 3.0
-  pullPolicy: IfNotPresent
+  repository: jessestuart/buildkite
+  tag: 3.2.0-arm64
+  pullPolicy: Always
 
 # Buildkite Agent settings
 agent:
   # Your Buildkite agent token, it must be set
-  token: ""
+  token: "573f69480ca759dcbffa8f16178b21a442712a222cec61b1c0"
   # Agent meta-data, which can be used to assign jobs
   meta: "role=agent"
 

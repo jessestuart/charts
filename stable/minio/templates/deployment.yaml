@@ -1,6 +1,9 @@
 {{- if eq .Values.mode "standalone" }}
 apiVersion: apps/v1beta2
 kind: Deployment
+# {{- if eq .Values.mode "standalone" "shared" }}
+# apiVersion: apps/v1
+# kind: DaemonSet
 metadata:
   name: {{ template "minio.fullname" . }}
   labels:
@@ -31,33 +34,45 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- if .Values.azuregateway.enabled }}
-          command: [ "/bin/sh", 
-          "-ce", 
-          "cp /tmp/config.json {{ .Values.configPath }} && 
+          command: [ "/bin/sh",
+          "-ce",
+          "cp /tmp/config.json {{ .Values.configPath }} &&
           /usr/bin/docker-entrypoint.sh minio -C {{ .Values.configPath }} gateway azure"]
           {{- else }}
           {{- if .Values.gcsgateway.enabled }}
-          command: [ "/bin/sh", 
-          "-ce", 
-          "cp /tmp/config.json {{ .Values.configPath }} && 
+          command: [ "/bin/sh",
+          "-ce",
+          "cp /tmp/config.json {{ .Values.configPath }} &&
           /usr/bin/docker-entrypoint.sh minio -C {{ .Values.configPath }} gateway gcs {{ .Values.gcsgateway.projectId }}"]
           {{- else }}
           {{- if .Values.nasgateway.enabled }}
-          command: [ "/bin/sh", 
-          "-ce", 
-          "cp /tmp/config.json {{ .Values.configPath }} && 
+          command: [ "/bin/sh",
+          "-ce",
+          "cp /tmp/config.json {{ .Values.configPath }} &&
           /usr/bin/docker-entrypoint.sh minio -C {{ .Values.configPath }} gateway nas {{ .Values.mountPath }}"]
           {{- else }}
-          command: [ "/bin/sh", 
-          "-ce", 
-          "cp /tmp/config.json {{ .Values.configPath }} && 
+          command: [ "/bin/sh",
+          "-ce",
+          "cp /tmp/config.json {{ .Values.configPath }} &&
           /usr/bin/docker-entrypoint.sh minio -C {{ .Values.configPath }} server {{ .Values.mountPath }}" ]
           {{- end }}
           {{- end }}
+          # # {{- if .Values.configPath }}
+          # # args: ["-C", "{{ .Values.configPath }}", "server", "{{ .Values.mountPath1 }}"]
+          # # {{- else }}
+          # args:
+          #   - "server"
+          #   {{- range $i, $device := tuple "1" "2" "3" }}
+          #   {{- range $j, $host := tuple "8" "9" "10" }}
+          #   - http://{{ template "minio.fullname" $ }}-{{ $i }}.{{ template "minio.fullname" $ }}.{{ $.Release.Namespace }}.svc.cluster.local{{ $.Values.mountPath }}
+          #   {{- end }}
+
+          # - "http://10.10.10.108"
+          # -
           {{- end }}
           volumeMounts:
             - name: export
-              mountPath: {{ .Values.mountPath }}
+              mountPath: {{ .Values.mountPath1 }}
               {{- if and .Values.persistence.enabled .Values.persistence.subPath }}
               subPath: "{{ .Values.persistence.subPath }}"
               {{- end }}

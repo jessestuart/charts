@@ -5,16 +5,16 @@ images:
   ## ref: https://hub.docker.com/r/drone/drone/tags/
   ##
   server:
-    repository: "docker.io/drone/drone"
-    tag: 0.8.5
+    repository: "docker.io/jessestuart/drone-server"
+    tag: v0.8.5
     pullPolicy: IfNotPresent
 
   ## The official drone (agent) image, change tag to use a different version.
   ## ref: https://hub.docker.com/r/drone/agent/tags/
   ##
   agent:
-    repository: "docker.io/drone/agent"
-    tag: 0.8.5
+    repository: "docker.io/jessestuart/drone-agent"
+    tag: v0.8.5
     pullPolicy: IfNotPresent
 
   ## The official docker (dind) image, change tag to use a different version.
@@ -22,7 +22,7 @@ images:
   ##
   dind:
     repository: "docker.io/library/docker"
-    tag: 17.12.0-ce-dind
+    tag: 18.03.1-ce-dind
     pullPolicy: IfNotPresent
 
 service:
@@ -65,7 +65,7 @@ server:
   ## If not set, it will be autofilled with the cluster host.
   ## Host must be in "<scheme>://<hostname>" format.
   ##
-  # host: "https://drone.domain.io"
+  host: "https://drone.jesses.io"
 
   ## Drone server configuration.
   ## Values in here get injected as environment variables.
@@ -80,22 +80,22 @@ server:
     ## git service or it won't start up.
     ## Uncomment this and add your own custom configuration.
     ##
-    # DRONE_PROVIDER: "github"
-    # DRONE_OPEN: "true"
-    # DRONE_GITHUB: "true"
-    # DRONE_ORGS: "my-github-org,my-other-github-org"
-    # DRONE_ADMIN:"admin-1,admin-2"
-    # DRONE_GITHUB_CLIENT: "github-oauth2-client-id"
+    DRONE_PROVIDER: "github"
+    DRONE_OPEN: "true"
+    DRONE_GITHUB: "true"
+    DRONE_ORGS: "jessestuart"
+    DRONE_ADMIN: "jessestuart"
+    DRONE_GITHUB_CLIENT: "github-oauth2-client-id"
 
   ## Secret environment variables are configured in `server.envSecrets`.
   ## Each item in `server.envSecrets` references a Kubernetes Secret.
   ## These Secrets should be created before they are referenced.
   ##
-  # envSecrets:
-  #   # The name of a Kubernetes Secret
-  #   drone-server-secrets:
-  #     # A list of Secret keys to include as environment variables
-  #     - DRONE_GITHUB_SECRET
+  envSecrets:
+    # The name of a Kubernetes Secret
+    drone-server-secrets:
+      # A list of Secret keys to include as environment variables
+      - DRONE_GITHUB_SECRET
 
   ## Additional server annotations.
   ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
