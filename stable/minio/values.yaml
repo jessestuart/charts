@@ -95,8 +95,7 @@ ingress:
 ## Ref: https://kubernetes.io/docs/user-guide/node-selection/
 ##
 nodeSelector:
-  kr2.nfs.jesses.io: "true"
-  # minio.jesses.io: "true"
+  minio.jesses.io: "true"
 tolerations: []
 affinity: {}
 

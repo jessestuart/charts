@@ -20,8 +20,8 @@ Domain: consul
 ## Used as selector
 Component: "consul"
 Replicas: 3
-Image: consul
-ImageTag: 1.1.0
+Image: jessestuart/consul
+ImageTag: 1.2.0
 ImagePullPolicy: Always
 Resources: {}
  # requests:
@@ -113,9 +113,10 @@ ConsulConfig: []
 
 ## Create an Ingress for the Web UI
 uiIngress:
-  enabled: false
+  enabled: true
   annotations: {}
-  hosts: []
+  hosts:
+    - consul.internal.jesses.io
   tls: {}
 
 ## test container details
