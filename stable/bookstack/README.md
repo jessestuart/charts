@@ -24,7 +24,7 @@ It also uses the [MariaDB chart](https://github.com/kubernetes/charts/tree/maste
 To install the chart with the release name `my-release`:
 
 ```bash
-$ helm update --install my-release stable/bookstack
+$ helm upgrade --install my-release stable/bookstack
 ```
 
 The command deploys Bookstack on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
